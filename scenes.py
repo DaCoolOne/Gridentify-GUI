@@ -215,6 +215,7 @@ class GameScene(Scene):
     def on_key_press(self, symbol, modifiers):
         if symbol == key.R:
             self.client = Client(self.USERNAME)
+            self.current_score = 0
         elif symbol == key.H:
             self.scene_manager.change_scene("HIGHSCORE")
 
