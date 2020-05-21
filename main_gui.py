@@ -7,7 +7,7 @@ import pyglet.sprite
 
 USERNAME = ""
 
-window = pyglet.window.Window(width=GRID_SIZE * 5, height=GRID_SIZE * 5)
+window = pyglet.window.Window(width=GRID_SIZE * 5, height=GRID_SIZE * 5 + 50)
 window.config.alpha_size = 8
 
 # Create a human player:

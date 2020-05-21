@@ -109,6 +109,12 @@ class GameScene(Scene):
                                              x=window.width // 2, y=window.height // 2 - 120,
                                              anchor_x='center', anchor_y='center')
 
+        self.in_game_score = pyglet.text.Label('score',
+                                               font_name='Times New Roman',
+                                               font_size=28,
+                                               x=window.width // 2, y=window.height - 2,
+                                               anchor_x='center', anchor_y='top')
+
         self.game_over.color = (255, 0, 0, 255)
         self.game_over_2.color = self.game_over.color
         self.game_over_3.color = self.game_over.color
@@ -172,7 +178,10 @@ class GameScene(Scene):
 
                     self.label.draw()
 
-            if not board.can_move:
+            if board.can_move:
+                self.in_game_score.text = "Score: " + str(self.current_score)
+                self.in_game_score.draw()
+            else:
                 self.game_over.draw()
                 self.score.text = "Final score: " + str(self.current_score)
                 self.score.draw()
