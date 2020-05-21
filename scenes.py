@@ -103,9 +103,15 @@ class GameScene(Scene):
                                              font_size=24,
                                              x=window.width // 2, y=window.height // 2 - 90,
                                              anchor_x='center', anchor_y='center')
+        self.game_over_3 = pyglet.text.Label('press h for highscores',
+                                             font_name='Times New Roman',
+                                             font_size=24,
+                                             x=window.width // 2, y=window.height // 2 - 120,
+                                             anchor_x='center', anchor_y='center')
 
         self.game_over.color = (255, 0, 0, 255)
         self.game_over_2.color = self.game_over.color
+        self.game_over_3.color = self.game_over.color
 
         self.label = pyglet.text.Label('Hello, world',
                                        font_name='Times New Roman',
@@ -142,7 +148,7 @@ class GameScene(Scene):
                 glColor4f(1, 1, 1, 1)
                 self.label.color = (255, 255, 255, 255)
             else:
-                glColor4f(1, 1, 1, 0.5)
+                glColor4f(1, 1, 1, 0.2)
                 self.label.color = (255, 255, 255, 128)
 
             self.board_overlay.update_colors(board)
@@ -152,7 +158,8 @@ class GameScene(Scene):
                 for j in range(board.width):
                     pos = Vec2(j, i)
 
-                    if pos == self.currently_over or is_in_move(pos, self.moves):
+                    if (pos == self.currently_over or is_in_move(pos, self.moves)) \
+                            and board.can_move:
                         self.grid_space_selected.blit((j + 0.5) * GRID_SIZE, (i + 0.5) * GRID_SIZE)
                     else:
                         # grid_fill.blit((j + 0.5) * GRID_SIZE, (i + 0.5) * GRID_SIZE)
@@ -170,6 +177,7 @@ class GameScene(Scene):
                 self.score.text = "Final score: " + str(self.current_score)
                 self.score.draw()
                 self.game_over_2.draw()
+                self.game_over_3.draw()
 
     def on_mouse_drag(self, x, y, dx, dy, buttons, modifiers):
         now_over = get_grid_space(x, y)
@@ -221,7 +229,7 @@ class HighscoreScene(Scene):
                                       font_name='Times New Roman',
                                       font_size=12,
                                       x=5, y=window.height - 2,
-                                      anchor_x='left', anchor_y='top', multiline=True, width = window.width)
+                                      anchor_x='left', anchor_y='top', multiline=True, width=window.width)
 
         self.waiting = pyglet.text.Label('LOADING HIGHSCORES',
                                          font_name='Times New Roman',
