@@ -138,8 +138,8 @@ class GameScene(Scene):
         self.board_overlay = BoardOverlay(25, self.grid_fill)
 
     def on_draw(self, window: pyglet.window.Window):
-
-        glClearColor(1, 1, 1, 1)
+        grey = 221 / 255
+        glClearColor(grey, grey, grey, 1)
         window.clear()
 
         # Todo: Move highscores to different menu
@@ -330,7 +330,7 @@ class BoardOverlay:
                     grid_fill, (j + 0.5) * GRID_SIZE, (i + 0.5) * GRID_SIZE))
 
     def create_color(self, index: int):
-        h, s, v = (0.3, 0.7, 0)
+        h, s, v = (0.3, 0.5, 0)
 
         i = 1
         while index % (2 ** i) == 0:
@@ -347,7 +347,7 @@ class BoardOverlay:
             s = 0
             v = 2 / index
 
-        r, g, b = colorsys.hsv_to_rgb(h, s, 1 / (1 + v))
+        r, g, b = colorsys.hsv_to_rgb(h, s, 0.9 / (1 + v))
         return int(r * 255), int(g * 255), int(b * 255)
 
     def update_colors(self, board: Board):
