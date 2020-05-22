@@ -316,10 +316,31 @@ class BoardOverlay:
                     grid_fill, (j + 0.5) * GRID_SIZE, (i + 0.5) * GRID_SIZE))
 
     def create_color(self, index: int):
-        while len(self.colors) <= index:
-            r, g, b = colorsys.hsv_to_rgb(random.uniform(0, 1), random.uniform(0.4, 0.7), 0.5)
-            self.colors.append( (int(r * 255), int(g * 255), int(b * 255)) )
-        return self.colors[index]
+        h, s, v = (0.4, 0.5, 0.3)
+
+        i = 1
+        while index % (2 ** i) == 0:
+            h += 0.1
+            i += 1
+
+        i = 1
+        while index % (3 ** i) == 0:
+            v += 0.3
+            i += 1
+
+        i = 1
+        while index % (5 ** i) == 0:
+            s += 0.2
+            i += 1
+
+        if index % 7 == 0:
+            v = 1
+
+        if index % 11 == 0:
+            v = 0
+
+        r, g, b = colorsys.hsv_to_rgb(h, s, v)
+        return int(r * 255), int(g * 255), int(b * 255)
 
     def update_colors(self, board: Board):
         for x in range(self.width):
