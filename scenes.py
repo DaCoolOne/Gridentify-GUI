@@ -349,7 +349,7 @@ class BoardOverlay:
 
         if any(index % prime == 0 for prime in [5, 7, 11, 13, 17, 19, 23]):
             s = 0
-            v = 2 / index
+            v = index / 20
 
         r, g, b = colorsys.hsv_to_rgb(h, s, 0.9 / (1 + v))
         return int(r * 255), int(g * 255), int(b * 255)
