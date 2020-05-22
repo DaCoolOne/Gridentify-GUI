@@ -325,7 +325,11 @@ class BoardOverlay:
                 self.data[i].append(pyglet.sprite.Sprite(
                     grid_fill, (j + 0.5) * GRID_SIZE, (i + 0.5) * GRID_SIZE))
 
-    def create_color(self, index: int):
+    @staticmethod
+    def create_color(index: int):
+        if index == 0:
+            return 0, 0, 0
+
         h, s, v = (0.4, 0.5, 0.3)
 
         i = 1
@@ -352,10 +356,17 @@ class BoardOverlay:
         r, g, b = colorsys.hsv_to_rgb(h, s, v)
         return int(r * 255), int(g * 255), int(b * 255)
 
+    def get_color(self, index):
+        while len(self.colors) <= index:
+            print(len(self.colors))
+            self.colors.append(BoardOverlay.create_color(len(self.colors)))
+
+        return self.colors[index]
+
     def update_colors(self, board: Board):
         for x in range(self.width):
             for y in range(self.height):
-                self.data[y][x].color = self.create_color(board.get_from_coordinate(Vec2(x, y)))
+                self.data[y][x].color = self.get_color(board.get_from_coordinate(Vec2(x, y)))
 
     def draw(self):
         for x in range(self.width):
