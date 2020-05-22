@@ -113,15 +113,16 @@ class GameScene(Scene):
                                                font_name='Times New Roman',
                                                font_size=28,
                                                x=window.width // 2, y=window.height - 2,
-                                               anchor_x='center', anchor_y='top')
+                                               anchor_x='center', anchor_y='top',
+                                               color=(0, 0, 0, 255))
 
         self.game_over.color = (255, 0, 0, 255)
         self.game_over_2.color = self.game_over.color
         self.game_over_3.color = self.game_over.color
 
         self.label = pyglet.text.Label('Hello, world',
-                                       font_name='Times New Roman',
-                                       font_size=36,
+                                       font_name='Clear Sans',
+                                       font_size=32,
                                        x=window.width // 2, y=window.height // 2,
                                        anchor_x='center', anchor_y='center')
 
@@ -138,6 +139,9 @@ class GameScene(Scene):
 
     def on_draw(self, window: pyglet.window.Window):
 
+        glClearColor(1, 1, 1, 1)
+        window.clear()
+
         # Todo: Move highscores to different menu
         self.h.update()
 
@@ -152,10 +156,10 @@ class GameScene(Scene):
         if board is not None:
             if board.can_move:
                 glColor4f(1, 1, 1, 1)
-                self.label.color = (255, 255, 255, 255)
+                self.label.color = (0, 0, 0, 255)
             else:
                 glColor4f(1, 1, 1, 0.2)
-                self.label.color = (255, 255, 255, 128)
+                self.label.color = (0, 0, 0, 128)
 
             self.board_overlay.update_colors(board)
             self.board_overlay.draw()
@@ -326,30 +330,24 @@ class BoardOverlay:
                     grid_fill, (j + 0.5) * GRID_SIZE, (i + 0.5) * GRID_SIZE))
 
     def create_color(self, index: int):
-        h, s, v = (0.4, 0.5, 0.3)
+        h, s, v = (0.3, 0.7, 0)
 
         i = 1
         while index % (2 ** i) == 0:
-            h += 0.1
             i += 1
+            v += 0.05
+            h += 0.075
 
         i = 1
         while index % (3 ** i) == 0:
+            i += 1
             v += 0.3
-            i += 1
 
-        i = 1
-        while index % (5 ** i) == 0:
-            s += 0.2
-            i += 1
+        if any(index % prime == 0 for prime in [5, 7, 11, 13, 17, 19, 23]):
+            s = 0
+            v = 2 / index
 
-        if index % 7 == 0:
-            v = 1
-
-        if index % 11 == 0:
-            v = 0
-
-        r, g, b = colorsys.hsv_to_rgb(h, s, v)
+        r, g, b = colorsys.hsv_to_rgb(h, s, 1 / (1 + v))
         return int(r * 255), int(g * 255), int(b * 255)
 
     def update_colors(self, board: Board):
